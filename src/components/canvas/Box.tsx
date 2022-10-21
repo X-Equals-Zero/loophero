@@ -6,6 +6,7 @@ const BoxComponent = ({ route }) => {
   const router = useRouter()
   // This reference will give us direct access to the THREE.Mesh object
   const mesh = useRef(null)
+  const mesh2 = useRef(null)
   // Set up state for the hovered and active state
   const [hovered, setHover] = useState(false)
   // Subscribe this component to the render-loop, rotate the mesh every frame
@@ -25,6 +26,16 @@ const BoxComponent = ({ route }) => {
         scale={hovered ? 1.1 : 1}
       >
         <boxBufferGeometry args={[1, 1, 1]} />
+        <meshPhysicalMaterial color={route === '/' ? 'orange' : 'hotpink'} />
+      </mesh>
+      <mesh
+        ref={mesh2}
+        onClick={() => router.push(route)}
+        onPointerOver={() => setHover(true)}
+        onPointerOut={() => setHover(false)}
+        scale={hovered ? 1.1 : 1}
+      >
+        <boxBufferGeometry args={[1, 0.5, 2]} />
         <meshPhysicalMaterial color={route === '/' ? 'orange' : 'hotpink'} />
       </mesh>
       <directionalLight position={[5, 5, 5]} />

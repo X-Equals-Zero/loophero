@@ -26,6 +26,9 @@ export default function Instructions() {
         Step 5 - <span className='text-green-200'>delete:</span>
         <span className='text-red-200'> @/components/dom/Instructions</span>
       </div>
+      <div className='relative max-w-md text-2xl bg-slate-400'>
+        Panel 1
+      </div>
     </div>
   )
 }
