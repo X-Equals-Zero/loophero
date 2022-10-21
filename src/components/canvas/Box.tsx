@@ -1,6 +1,6 @@
 import { ReactThreeFiber, useFrame } from '@react-three/fiber'
 import { useRouter } from 'next/router'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 const sphereMesh = () => {
   let x = (args) => (
     <mesh visible
@@ -12,30 +12,24 @@ const sphereMesh = () => {
   )
   let i = 0;
   let result: Array<ReactThreeFiber.MeshProps> = [];
-  while (i < 10) {
-    result.push(x([Math.cos(i), Math.sin(i), Math.tan(i)]));
+  while (i < 100) {
+    result.push(x([Math.cos(i), Math.sin(i), Math.sin(i)]));
+    result.push(x([Math.cos(i), Math.sin(i), Math.cos(i)]));
+    console.log("test" + i);
     i++;
   }
 
   return result;
 }
 const BoxComponent = ({ route }) => {
+  const [SphereGrid, setSphereGrid] = useState([]);
+  useEffect(() => { setSphereGrid(sphereMesh()) }, [])
   const router = useRouter()
   // This reference will give us direct access to the THREE.Mesh object
   const mesh = useRef(null)
   const mesh2 = useRef(null)
-  const vertices = new Float32Array([
-    -1.0, -1.0, 1.0,
-    1.0, -1.0, 1.0,
-    1.0, 1.0, 1.0,
-
-    1.0, 1.0, 1.0,
-    -1.0, 1.0, 1.0,
-    -1.0, -1.0, 1.0
-  ]);
   // Set up state for the hovered and active state
   const [hovered, setHover] = useState(false)
-  const [hovered2, setHover2] = useState(false)
 
   // Subscribe this component to the render-loop, rotate the mesh every frame
   useFrame((state, delta) =>
@@ -60,7 +54,7 @@ const BoxComponent = ({ route }) => {
         <boxBufferGeometry args={[1, 1, 1]} />
         <meshPhysicalMaterial color={route === '/' ? 'orange' : 'hotpink'} />
       </mesh>
-      {sphereMesh().map((e => (<> {e}</>)))}
+      {SphereGrid.map((e => (<> {e} </>)))}
 
 
       <directionalLight position={[5, 5, 5]} />
