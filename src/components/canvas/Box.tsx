@@ -1,15 +1,22 @@
 import { ReactThreeFiber, useFrame } from '@react-three/fiber'
 import { useRouter } from 'next/router'
 import { useEffect, useRef, useState } from 'react'
-const sphereMesh = () => {
-  let x = (args) => (
-    <mesh visible
 
-      userData={{ hello: 'world' }} position={[args[0], args[1], args[2]]} rotation={[Math.PI / 2, 0, 0]}>
-      <sphereGeometry args={[0.2, 11, 11]} />
-      <meshStandardMaterial color="hotpink" />
-    </mesh>
-  )
+const sphereMesh = () => {
+  // const [hovered, setHover] = useState(false);
+  let x = (args) => {
+
+    return (
+      <mesh visible
+        // onPointerOver={() => setHover(true)}
+        // onPointerOut={() => setHover(false)}
+        // scale={hovered ? 1.1 : 1}
+        userData={{ hello: 'world' }} position={[args[0], args[1], args[2]]} rotation={[Math.PI / 2, 0, 0]}>
+        <sphereGeometry args={[0.2, 11, 11]} />
+        <meshStandardMaterial color="hotpink" />
+      </mesh>
+    )
+  }
   let i = 0;
   let result: Array<ReactThreeFiber.MeshProps> = [];
   while (i < 100) {
@@ -55,6 +62,7 @@ const BoxComponent = ({ route }) => {
         <meshPhysicalMaterial color={route === '/' ? 'orange' : 'hotpink'} />
       </mesh>
       {SphereGrid.map((e => (<> {e} </>)))}
+
 
 
       <directionalLight position={[5, 5, 5]} />
