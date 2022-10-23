@@ -2,6 +2,12 @@ import { ReactThreeFiber, useFrame } from '@react-three/fiber'
 import { useRouter } from 'next/router'
 import { useEffect, useRef, useState } from 'react'
 
+
+// Game idea:
+// spinning cube which you have to use orbit-camera to follow a certain face
+//  -- maybe switch to higher poly surfaces too?
+//  as you last enough time, cube spins faster (like superhexagon)
+//  spinning balls are obstacles around cube
 const sphereMesh = () => {
   // const [hovered, setHover] = useState(false);
   let x = (args) => {
@@ -49,6 +55,7 @@ const BoxComponent = ({ route }) => {
       : null
   )
   // Return the view, these are regular Threejs elements expressed in JSX
+  // :D
   return (
     <>
       <mesh
