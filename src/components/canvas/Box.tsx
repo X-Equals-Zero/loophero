@@ -47,11 +47,11 @@ const BoxComponent = ({ route }) => {
   // Subscribe this component to the render-loop, rotate the mesh every frame
   useFrame((state, delta) =>
     mesh.current
-      ? (mesh.current.rotation.y = mesh.current.rotation.x += 0.01)
+      ? (mesh.current.rotation.y = mesh.current.rotation.x += Math.random() * 0.04)
       : null
     ,
     mesh2.current
-      ? (mesh2.current.rotation.x = mesh2.current.rotation.x += 0.01)
+      ? (mesh2.current.rotation.x = mesh2.current.rotation.x += Math.random() * 0.02)
       : null
   )
   // Return the view, these are regular Threejs elements expressed in JSX
