@@ -59,6 +59,19 @@ const Shader = (props) => {
         Math.sin(delta / 0.5) * Math.cos(delta / 0.5)
     }
   })
+  const city = [];
+  for (let i = 0; i < 17; i++) {
+    for (let j = 0; j < 2; j++) {
+      city.push(
+        <mesh position={[i * 0.5 - 4, j - 2, 1]}>
+
+          <boxBufferGeometry args={[Math.random() * 1, Math.random() * 1, Math.random() * 1 + 1]} />
+          {/* @ts-ignore */}
+          <colorShiftMaterial key={ColorShiftMaterial.key} />
+        </mesh>
+      );
+    }
+  }
 
   return (
     <>
@@ -81,10 +94,11 @@ const Shader = (props) => {
       </mesh>
       <mesh position={[0, 2, 1]}>
 
-        <boxBufferGeometry args={[3, 3, 1]} />
+        <boxBufferGeometry args={[13, 3, 1]} />
         {/* @ts-ignore */}
-        <colorShiftMaterial key={ColorShiftMaterial.key} />
+        <colorShiftMaterial key={ColorShiftMaterial.key} color={new THREE.Color(0, 1, 1)} />
       </mesh>
+      {city}
 
     </>
   )
