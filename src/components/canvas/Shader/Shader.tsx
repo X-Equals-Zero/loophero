@@ -23,13 +23,44 @@ ColorShiftMaterial.key = THREE.MathUtils.generateUUID()
 
 extend({ ColorShiftMaterial })
 
+const city = ({ waterHeight, cityHeight }) => {
+  const city = [];
+  const waterH = waterHeight;
+  const cityH = cityHeight;
+  const offsetHeight = waterHeight + (cityHeight / 2);
+  if (city.length < 1) {
+    for (let i = 0; i < 43; i++) {
+      for (let j = 0; j < 8; j++) {
+        let height = Math.random();
+        city.push(
+          <>
+            <mesh position={[i * 0.2 - 4, j * 0.2 - 2, (height / 2) + offsetHeight]}>
+
+              <boxBufferGeometry args={[Math.random() * 0.2, Math.random() * 0.2, height]} />
+              {/* @ts-ignore */}
+              <colorShiftMaterial key={ColorShiftMaterial.key} color={new THREE.Color(Math.min(Math.random(), 0.05), Math.min(Math.random(), 0.05), Math.min(Math.random() * 2, 1.025))} />
+            </mesh>
+            <mesh position={[i * 0.2 - 4, j * 0.2 - 2, (height / 2) + 1.5 + height]}>
+
+              <sphereBufferGeometry args={[0.05, 1, 1]} />
+              {/* @ts-ignore */}
+              <colorShiftMaterial key={ColorShiftMaterial.key} color={new THREE.Color(1, 1, 1)} />
+            </mesh>
+          </>
+        );
+      }
+    }
+  }
+  return city;
+}
 
 const Shader = (props) => {
-
+  const waterHeight = 1;
+  const cityHeight = 1;
   const meshRef = useRef(null)
   const [hovered, setHover] = useState(false)
   const router = useRouter()
-
+  const [cityArray, setCity] = useState([]);
   const demoMesh = () => {
     return (
       <mesh
@@ -59,38 +90,12 @@ const Shader = (props) => {
         Math.sin(delta / 0.5) * Math.cos(delta / 0.5)
     }
 
-    if (hovered) {
-      setCity(city);
+    if (hovered || cityArray.length < 1) {
+      setCity(city({ waterHeight, cityHeight }));
     }
   })
-  const city = [];
-  const waterHeight = 1;
-  const cityHeight = 1;
-  const offsetHeight = waterHeight + (cityHeight / 2);
-  if (city.length < 2) {
-    for (let i = 0; i < 43; i++) {
-      for (let j = 0; j < 8; j++) {
-        let height = Math.random();
-        city.push(
-          <>
-            <mesh position={[i * 0.2 - 4, j * 0.2 - 2, (height / 2) + offsetHeight]}>
 
-              <boxBufferGeometry args={[Math.random() * 0.2, Math.random() * 0.2, height]} />
-              {/* @ts-ignore */}
-              <colorShiftMaterial key={ColorShiftMaterial.key} color={new THREE.Color(Math.min(Math.random(), 0.05), Math.min(Math.random(), 0.05), Math.min(Math.random() * 2, 1.025))} />
-            </mesh>
-            <mesh position={[i * 0.2 - 4, j * 0.2 - 2, (height / 2) + 1.5 + height]}>
 
-              <sphereBufferGeometry args={[0.05, 2, 3]} />
-              {/* @ts-ignore */}
-              <colorShiftMaterial key={ColorShiftMaterial.key} color={new THREE.Color(0, 0, 0)} />
-            </mesh>
-          </>
-        );
-      }
-    }
-  }
-  const [cityArray, setCity] = useState(city);
 
   return (
     <>
