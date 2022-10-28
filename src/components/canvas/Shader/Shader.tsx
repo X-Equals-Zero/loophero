@@ -42,7 +42,7 @@ const city = ({ waterHeight, cityHeight }) => {
             </mesh>
             <mesh position={[i * 0.2 - 4, j * 0.2 - 2, (height / 2) + 1.5 + height]}>
 
-              <sphereBufferGeometry args={[0.05, 1, 1]} />
+              <sphereBufferGeometry args={[height / 10, 1, 1]} />
               {/* @ts-ignore */}
               <colorShiftMaterial key={ColorShiftMaterial.key} color={new THREE.Color(1, 1, 1)} />
             </mesh>
