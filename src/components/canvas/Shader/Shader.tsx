@@ -58,20 +58,39 @@ const Shader = (props) => {
       meshRef.current.material.uniforms.time.value +=
         Math.sin(delta / 0.5) * Math.cos(delta / 0.5)
     }
+
+    if (hovered) {
+      setCity(city);
+    }
   })
   const city = [];
-  for (let i = 0; i < 17; i++) {
-    for (let j = 0; j < 2; j++) {
-      city.push(
-        <mesh position={[i * 0.5 - 4, j - 2, 1]}>
+  const waterHeight = 1;
+  const cityHeight = 1;
+  const offsetHeight = waterHeight + (cityHeight / 2);
+  if (city.length < 2) {
+    for (let i = 0; i < 43; i++) {
+      for (let j = 0; j < 8; j++) {
+        let height = Math.random();
+        city.push(
+          <>
+            <mesh position={[i * 0.2 - 4, j * 0.2 - 2, (height / 2) + offsetHeight]}>
 
-          <boxBufferGeometry args={[Math.random() * 1, Math.random() * 1, Math.random() * 1 + 1]} />
-          {/* @ts-ignore */}
-          <colorShiftMaterial key={ColorShiftMaterial.key} />
-        </mesh>
-      );
+              <boxBufferGeometry args={[Math.random() * 0.2, Math.random() * 0.2, height]} />
+              {/* @ts-ignore */}
+              <colorShiftMaterial key={ColorShiftMaterial.key} color={new THREE.Color(Math.min(Math.random(), 0.05), Math.min(Math.random(), 0.05), Math.min(Math.random() * 2, 1.025))} />
+            </mesh>
+            <mesh position={[i * 0.2 - 4, j * 0.2 - 2, (height / 2) + 1.5 + height]}>
+
+              <sphereBufferGeometry args={[0.05, 2, 3]} />
+              {/* @ts-ignore */}
+              <colorShiftMaterial key={ColorShiftMaterial.key} color={new THREE.Color(0, 0, 0)} />
+            </mesh>
+          </>
+        );
+      }
     }
   }
+  const [cityArray, setCity] = useState(city);
 
   return (
     <>
@@ -86,9 +105,9 @@ const Shader = (props) => {
         {/* @ts-ignore */}
         <colorShiftMaterial key={ColorShiftMaterial.key} time={0.3} />
       </mesh>
-      <mesh position={[0, -2, 1]}>
+      <mesh position={[0, -2, waterHeight]}>
 
-        <boxBufferGeometry args={[3, 3, 1]} />
+        <boxBufferGeometry args={[13, 3, cityHeight]} />
         {/* @ts-ignore */}
         <colorShiftMaterial key={ColorShiftMaterial.key} />
       </mesh>
@@ -98,7 +117,7 @@ const Shader = (props) => {
         {/* @ts-ignore */}
         <colorShiftMaterial key={ColorShiftMaterial.key} color={new THREE.Color(0, 1, 1)} />
       </mesh>
-      {city}
+      {cityArray}
 
     </>
   )
