@@ -2,6 +2,7 @@ import Header from '@/config'
 import Dom from '@/components/layout/dom'
 import '@/styles/index.css'
 import dynamic from 'next/dynamic'
+import { Scroll } from '@react-three/drei'
 
 const LCanvas = dynamic(() => import('@/components/layout/canvas'), {
   ssr: true,
@@ -10,7 +11,8 @@ const LCanvas = dynamic(() => import('@/components/layout/canvas'), {
 function App({ Component, pageProps = { title: 'index' } }) {
   return (
     <>
-      {Component?.r3f && <LCanvas><Component {...pageProps} /></LCanvas>}
+
+      <LCanvas><Component {...pageProps} /></LCanvas>
     </>
   )
 }
