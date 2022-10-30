@@ -11,8 +11,10 @@ const LCanvas = dynamic(() => import('@/components/layout/canvas'), {
 function App({ Component, pageProps = { title: 'index' } }) {
   return (
     <>
-
-      <LCanvas><Component {...pageProps} /></LCanvas>
+      <LCanvas>
+        <Component {...pageProps} />
+        {Component?.r3f && Component.r3f(pageProps)}
+      </LCanvas>
     </>
   )
 }

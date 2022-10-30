@@ -25,7 +25,7 @@ const LCanvas = ({ children }) => {
           pages={3}
         >
           <Preload all />
-          <Shader />
+
           {children}
           {/* <LControl /> */}
 
