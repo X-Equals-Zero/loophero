@@ -1,7 +1,7 @@
 import * as THREE from 'three'
 import { useFrame, extend } from '@react-three/fiber'
 import { useRef, useState } from 'react'
-import { shaderMaterial } from '@react-three/drei'
+import { shaderMaterial, useScroll } from '@react-three/drei'
 
 import vertex from './glsl/shader.vert'
 import fragment from './glsl/shader.frag'
@@ -61,6 +61,8 @@ const Shader = (props) => {
   const [hovered, setHover] = useState(false)
   const router = useRouter()
   const [cityArray, setCity] = useState([]);
+  let scroll = useScroll();
+  let offset = 1 - scroll?.offset;
   const demoMesh = () => {
     return (
       <mesh
@@ -88,6 +90,8 @@ const Shader = (props) => {
     if (meshRef.current.material) {
       meshRef.current.material.uniforms.time.value +=
         Math.sin(delta / 0.5) * Math.cos(delta / 0.5)
+      state.camera.position.set(0, 0, Math.cos(((scroll.offset) * Math.PI) / 3) * 10);
+      state.camera.lookAt(0, 0, 0);
     }
 
     if (hovered || cityArray.length < 1) {
