@@ -1,11 +1,12 @@
-import { Canvas, useFrame, useThree, Color } from '@react-three/fiber'
-import { OrbitControls, PerspectiveCamera, Preload, Scroll, ScrollControls, useScroll } from '@react-three/drei'
+import { Canvas } from '@react-three/fiber'
+import { Preload, ScrollControls } from '@react-three/drei'
 import useStore from '@/helpers/store'
-import { Suspense, useEffect, useLayoutEffect, useRef, useState } from 'react'
-import Shader from '../canvas/Shader/Shader'
+import { Suspense, useEffect, useRef } from 'react'
+
 
 const LCanvas = ({ children }) => {
   const dom = useStore((state) => state.dom)
+  useEffect(() => console.log(dom))
   return (
 
     <Canvas
@@ -19,12 +20,17 @@ const LCanvas = ({ children }) => {
         position: 'absolute',
         top: 0,
       }}
+    //onCreated={(state) => state.events.connect(dom.current)}
+    //** gotta fix this at some point. edit: since <dom> is inside <lcanvas>, states already connected!
     >
       <Suspense fallback={null}>
+        <Preload all />
+
         < ScrollControls
           pages={3}
+          damping={15}
         >
-          <Preload all />
+
 
           {children}
           {/* <LControl /> */}
@@ -32,7 +38,8 @@ const LCanvas = ({ children }) => {
 
         </ScrollControls >
       </Suspense>
-    </Canvas>
+
+    </Canvas >
 
   )
 }

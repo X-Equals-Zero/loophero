@@ -1,10 +1,4 @@
 import dynamic from 'next/dynamic'
-// Step 5 - delete Instructions components
-import Instructions from '@/components/dom/Instructions'
-import { Scroll, useScroll } from '@react-three/drei'
-import { useRef } from 'react'
-import { useFrame } from '@react-three/fiber'
-// import Shader from '@/components/canvas/Shader/Shader'
 
 // Dynamic import is used to prevent a payload when the website start that will include threejs r3f etc..
 // WARNING ! errors might get obfuscated by using dynamic import.
@@ -18,12 +12,10 @@ const Shader = dynamic(() => import('@/components/canvas/Shader/Shader'), {
 const Page = (props) => {
 
   return (
-    <Scroll html>
-      <h1>
-        Hello!
-      </h1>
-    </Scroll>
 
+    <h1>
+      Hello!
+    </h1>
 
   )
 }

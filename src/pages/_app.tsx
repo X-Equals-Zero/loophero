@@ -12,7 +12,11 @@ function App({ Component, pageProps = { title: 'index' } }) {
   return (
     <>
       <LCanvas>
-        <Component {...pageProps} />
+        <Scroll html>
+          <Dom>
+            <Component {...pageProps} />
+          </Dom>
+        </Scroll>
         {Component?.r3f && Component.r3f(pageProps)}
       </LCanvas>
     </>
