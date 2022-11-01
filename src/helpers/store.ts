@@ -1,3 +1,4 @@
+import { PerspectiveCamera } from '@react-three/drei'
 import create from 'zustand'
 import shallow from 'zustand/shallow'
 

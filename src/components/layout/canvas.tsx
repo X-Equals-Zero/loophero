@@ -5,14 +5,13 @@ import { Suspense, useEffect, useRef } from 'react'
 
 
 const LCanvas = ({ children }) => {
-  const dom = useStore((state) => state.dom)
-  useEffect(() => console.log(dom))
+  const camera = useStore((state) => state.camera)
   return (
 
     <Canvas
-      mode='concurrent'
+      color='#000fff'
       dpr={[1, 2]}
-      camera={{ position: [0, 0, 10] }}
+      camera={{ position: [0, 0, 10], up: [0, -1, 0] }}
 
 
       // camera={{ position: [0, canvasRef.current, 10] }}
@@ -23,6 +22,7 @@ const LCanvas = ({ children }) => {
     //onCreated={(state) => state.events.connect(dom.current)}
     //** gotta fix this at some point. edit: since <dom> is inside <lcanvas>, states already connected!
     >
+      <color attach='background' args={['gray']} />
       <Suspense fallback={null}>
         <Preload all />
 

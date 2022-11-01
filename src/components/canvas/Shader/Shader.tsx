@@ -1,12 +1,13 @@
 import * as THREE from 'three'
-import { useFrame, extend } from '@react-three/fiber'
-import { useRef, useState } from 'react'
+import { useFrame, extend, Vector3, useThree } from '@react-three/fiber'
+import { useEffect, useRef, useState } from 'react'
 import { shaderMaterial, useScroll } from '@react-three/drei'
 
 import vertex from './glsl/shader.vert'
 import fragment from './glsl/shader.frag'
 import { useRouter } from 'next/router'
 import { sign } from 'crypto'
+import useStore from '@/helpers/store'
 
 const ColorShiftMaterial = shaderMaterial(
   {
@@ -59,12 +60,14 @@ const Shader = (props) => {
   const city = ({ waterHeight, cityHeight }) => {
     const city = [];
     const offsetHeight = waterHeight + (cityHeight / 2);
+    let key = 0;
     if (city.length < 1) {
       for (let i = 0; i < 43; i++) {
         for (let j = 0; j < 8; j++) {
           let height = Math.random();
+          key++;
           city.push(
-            <group>
+            <group key={key}>
               <mesh position={[i * 0.2 - 4, j * 0.2 - 2, (height / 2) + offsetHeight]}>
 
                 <boxGeometry args={[Math.random() * 0.2, Math.random() * 0.2, height]} />
@@ -84,16 +87,36 @@ const Shader = (props) => {
     }
     return city;
   }
+
+  const CamRot1: Vector3 = (offset: number) => {
+    let x: Vector3 = new THREE.Vector3(0, 0, 0);
+    if (offset > 0.51) {
+      let sinusoid = (Math.cos(offset - 0.5 - Math.PI) + 1) * 5;
+      x = new THREE.Vector3(0, -sinusoid, sinusoid * 3);
+    }
+
+
+
+    return x;
+  }
+  const CamPos1: Vector3 = (offset: number) => {
+    let x: Vector3;
+    if (offset > 0.51) x = new THREE.Vector3(0, (offset - 0.5) * 5, 10 - offset * 5);
+    else x = new THREE.Vector3(0, 0, 10 - offset * 5)
+
+    return x;
+  }
   const [cityArray, setCity] = useState(city({ waterHeight, cityHeight }));
+
   useFrame((state, delta) => {
     // if (meshRef.current) {
     //   meshRef.current.rotation.x = meshRef.current.rotation.y += 0.01
     // }
     if (meshRef.current.material) {
       meshRef.current.material.uniforms.time.value +=
-        Math.sin(delta / 0.5) * Math.cos(delta / 0.5)
-      state.camera.position.set(0, 0, (Math.cos(((scroll.offset) * Math.PI) / 2.45) * 6.2));
-      state.camera.rotation.set(Math.min(-Math.PI * Math.atan(scroll.offset * 2 - 0.99), 0), 0, (Math.min(Math.PI * Math.atan(scroll.offset * Math.PI), Math.PI)));
+        Math.sin(delta / 0.5) * Math.cos(delta / 0.5);
+      state.camera.position.lerp(CamPos1(scroll.offset), 0.65)
+      state.camera.lookAt(CamRot1(scroll.offset));
     }
 
     if ((hovered) && ((performance.now() - startTime) > cityRenderDelay)) {
